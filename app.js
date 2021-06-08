@@ -114,7 +114,8 @@ function visualize() {
   const HEIGHT = viCanvas.height;
   
   anlyz.fftSize = 256;
-  const bufferLength = anlyz.frequencyBinCount;
+  const bufferLength = anlyz.fftSize;
+  //const bufferLength = anlyz.frequencyBinCount;
   const dataArray = new Uint8Array(bufferLength);
   vcctx.clearRect(0, 0, WIDTH, HEIGHT);
   
@@ -125,13 +126,13 @@ function visualize() {
     vcctx.fillStyle = 'rgb(0, 0, 0)';
     vcctx.fillRect(0, 0, WIDTH, HEIGHT);
     
-    const barWidth = (WIDTH / bufferLength) * 2.5;
+    const barWidth = (WIDTH / bufferLength);
     let barHeight;
     let x = 0;
     
     for(let i = 0; i < bufferLength; i++) {
       barHeight = dataArray[i] / 2;
-      vcctx.fillStyle = 'rgb(' + (barHeight+100) + ',50,50)';
+      vcctx.fillStyle = 'rgb(' + (barHeight + 100) + ', 50, 50)';
       vcctx.fillRect(x, HEIGHT-barHeight / 2, barWidth, barHeight);
         x += barWidth + 1;
     }
