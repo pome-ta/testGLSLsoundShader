@@ -113,15 +113,30 @@ function visualize() {
   const WIDTH = viCanvas.width;
   const HEIGHT = viCanvas.height;
   
-  anlyz.fftSize = 2048;
+  anlyz.fftSize = 256;
   const bufferLength = anlyz.frequencyBinCount;
   const dataArray = new Uint8Array(bufferLength);
   vcctx.clearRect(0, 0, WIDTH, HEIGHT);
   
   const draw = () => {
     requestAnimationFrame(draw);
-    anlyz.getByteTimeDomainData(dataArray);
+    anlyz.getByteFrequencyData(dataArray);
     
+    vcctx.fillStyle = 'rgb(0, 0, 0)';
+    vcctx.fillRect(0, 0, WIDTH, HEIGHT);
+    
+    const barWidth = (WIDTH / bufferLength) * 2.5;
+    let barHeight;
+    let x = 0;
+    
+    for(let i = 0; i < bufferLength; i++) {
+      barHeight = dataArray[i] / 2;
+      vcctx.fillStyle = 'rgb(' + (barHeight+100) + ',50,50)';
+      vcctx.fillRect(x, HEIGHT-barHeight / 2, barWidth, barHeight);
+        x += barWidth + 1;
+    }
+  };
+    /*
     vcctx.fillStyle = 'rgb(3, 3, 3)';
     vcctx.fillRect(0, 0, WIDTH, HEIGHT);
     vcctx.lineWidth = 1;
@@ -140,7 +155,7 @@ function visualize() {
     vcctx.lineTo(viCanvas.width, viCanvas.height / 2);
     vcctx.stroke();
     
-  };
+  };*/
   draw();
 }
 
