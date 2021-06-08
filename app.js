@@ -40,8 +40,11 @@ const AudioContext = window.AudioContext || window.webkitAudioContext;
 const ctx = new AudioContext();
 const node = ctx.createBufferSource();
 const anlyz = ctx.createAnalyser();
+const gain = ctx.createGain();
+gain.gain.value = 0.5;
 node.connect(anlyz);
-anlyz.connect(ctx.destination);
+anlyz.connect(gain);
+gain.connect(ctx.destination);
 
 node.loop = true;
 const audioBuffer = ctx.createBuffer(2, ctx.sampleRate * DURATION, ctx.sampleRate);
@@ -124,7 +127,7 @@ function visualize() {
     anlyz.getByteFrequencyData(dataArray);
     
     vcctx.fillStyle = 'rgb(0, 0, 0)';
-    vcctx.fillRect(0, 0, WIDTH, HEIGHT);
+    vcctx.fillRect(0, 0, WIDTH, HEIGHT) * 2.5;
     
     const barWidth = (WIDTH / bufferLength);
     let barHeight;
